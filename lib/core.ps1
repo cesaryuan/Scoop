@@ -577,6 +577,10 @@ function Invoke-ExternalCommand {
         [Hashtable]
         $ContinueExitCodes,
         [Parameter(ParameterSetName = 'Default')]
+        [Alias('EnvVar')]
+        [Hashtable]
+        $EnvironmentVariables,
+        [Parameter(ParameterSetName = 'Default')]
         [Alias('LogPath')]
         [String]
         $LogName
@@ -601,6 +605,9 @@ function Invoke-ExternalCommand {
         $Process.StartInfo.Verb = 'RunAs'
     } else {
         $Process.StartInfo.CreateNoWindow = $true
+    }
+    if ($EnvironmentVariables) {
+        $EnvironmentVariables.GetEnumerator() | ForEach-Object { $Process.StartInfo.EnvironmentVariables.Add($_.Key, $_.Value) }
     }
     if ($FilePath -match '^((cmd|cscript|wscript|msiexec)(\.exe)?|.*\.(bat|cmd|js|vbs|wsf))$') {
         $Process.StartInfo.Arguments = $ArgumentList -join ' '
