@@ -733,7 +733,7 @@ function install_msi($fname, $dir, $msi) {
 
     $continue_exit_codes = @{ 3010 = "a restart is required to complete installation" }
 
-    $installed = Invoke-ExternalCommand 'msiexec' $arg -Activity "Running installer..." -ContinueExitCodes $continue_exit_codes
+    $installed = Invoke-ExternalCommand 'msiexec' $arg -Prompt 'Running installer...' -ContinueExitCodes $continue_exit_codes
     if(!$installed) {
         abort "Installation aborted. You might need to run 'scoop uninstall $app' before trying again."
     }
@@ -765,7 +765,7 @@ function install_prog($fname, $dir, $installer, $global) {
     if($prog.endswith('.ps1')) {
         & $prog @arg
     } else {
-        $installed = Invoke-ExternalCommand $prog $arg -Activity "Running installer..."
+        $installed = Invoke-ExternalCommand $prog $arg -Prompt 'Running installer...'
         if(!$installed) {
             abort "Installation aborted. You might need to run 'scoop uninstall $app' before trying again."
         }
@@ -818,7 +818,7 @@ function run_uninstaller($manifest, $architecture, $dir) {
             if($exe.endswith('.ps1')) {
                 & $exe @arg
             } else {
-                $uninstalled = Invoke-ExternalCommand $exe $arg -Activity "Running uninstaller..." -ContinueExitCodes $continue_exit_codes
+                $uninstalled = Invoke-ExternalCommand $exe $arg -Prompt 'Running uninstaller...' -ContinueExitCodes $continue_exit_codes
                 if(!$uninstalled) { abort "Uninstallation aborted." }
             }
         }
