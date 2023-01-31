@@ -104,6 +104,7 @@ function Start-Download ($url, $to, $cookies) {
 
     try {
         $url = handle_special_urls $url
+        @{ url = $url; to = $to; cookies = $cookies; progress = $progress}
         Invoke-Download $url $to $cookies $progress
     } catch {
         $e = $_.exception
